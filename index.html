@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>澳門游泳成績排行 · Macau Swimming Rankings</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="logo">🏊</span>
+      <div class="brand-text">
+        <h1>澳門游泳成績排行</h1>
+        <p class="subtitle">Macau Swimming Rankings · 長池 50m</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="stdBtn" class="btn btn-ghost" title="查看達標標準時間表">📏 達標標準</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 性別切換 -->
+    <div class="gender-toggle" role="tablist" aria-label="性別">
+      <button class="gender-btn active" data-gender="M" role="tab">♂ 男子</button>
+      <button class="gender-btn" data-gender="F" role="tab">♀ 女子</button>
+    </div>
+
+    <!-- 篩選工具列 -->
+    <section class="toolbar">
+      <div class="field">
+        <label for="eventSel">項目</label>
+        <select id="eventSel"></select>
+      </div>
+      <div class="field">
+        <label for="meetSel">比賽</label>
+        <select id="meetSel"></select>
+      </div>
+      <div class="field grow">
+        <label for="searchBox">搜尋運動員</label>
+        <input type="text" id="searchBox" placeholder="輸入姓名…" />
+      </div>
+      <div class="field">
+        <label for="sortSel">排序</label>
+        <select id="sortSel">
+          <option value="time">成績 (快→慢)</option>
+          <option value="name">姓名 (A→Z)</option>
+          <option value="date">日期 (新→舊)</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- 結果摘要 -->
+    <div class="result-meta">
+      <span id="resultCount" class="count-badge">—</span>
+      <span id="resultEvent" class="event-label"></span>
+      <button id="resetBtn" class="btn btn-link">清除篩選</button>
+    </div>
+
+    <!-- 排行榜表格 -->
+    <div class="table-wrap">
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th class="col-rank">名次</th>
+            <th class="col-name">運動員</th>
+            <th class="col-meet">比賽</th>
+            <th class="col-date">日期</th>
+            <th class="col-time">成績</th>
+          </tr>
+        </thead>
+        <tbody id="rankBody"></tbody>
+      </table>
+      <p id="emptyHint" class="empty-hint" hidden>沒有符合條件的成績，試試調整篩選。</p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>數據來源：澳門游泳總會（第69屆澳門游泳錦標賽 + 2026年澳門先進游泳錦標賽 + 第49屆澳門分齡游泳比賽）· 長池 50m</p>
+  </footer>
+
+  <!-- 達標標準 modal -->
+  <div id="stdModal" class="modal-overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="stdTitle">
+      <div class="modal-head">
+        <h2 id="stdTitle">達標標準</h2>
+        <button id="stdClose" class="modal-close" aria-label="關閉">✕</button>
+      </div>
+      <div id="stdBody" class="std-body"></div>
+    </div>
+  </div>
+
+  <script src="standards.js?v=7"></script>
+  <script src="data-2026.js?v=6"></script>
+  <script src="app.js?v=9"></script>
+</body>
+</html>
