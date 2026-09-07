@@ -67,6 +67,17 @@ body {
   padding: 6px 8px;
   text-decoration: underline;
 }
+.btn-toggle {
+  background: #fff;
+  color: var(--pool-1);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-toggle:hover { border-color: var(--pool-2); }
+.btn-toggle.active { background: var(--gold); color: #fff; border-color: var(--gold); }
 
 /* ---------- Layout ---------- */
 .container { max-width: 1080px; margin: 0 auto; padding: 22px 20px 40px; }
@@ -131,6 +142,7 @@ body {
 .result-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 12px;
   margin: 18px 2px 10px;
 }

@@ -20,6 +20,7 @@
     meet: 'all',
     search: '',
     sort: 'time',
+    bestOnly: false,  // 只顯示每位運動員在每個項目嘅最快成績
   };
 
   // ---- DOM ----
@@ -32,6 +33,7 @@
   const resultCount = $('resultCount');
   const resultEvent = $('resultEvent');
   const emptyHint = $('emptyHint');
+  const bestBtn = $('bestBtn');
 
   // ---- 工具：時間轉換 ----
   function formatTime(sec) {
@@ -125,6 +127,17 @@
       return true;
     });
 
+    // 只顯示最佳成績：每位運動員在每個項目（泳式×距離）只留最快一次
+    if (state.bestOnly) {
+      const best = new Map();
+      for (const d of rows) {
+        const key = `${d.name}|${d.stroke}|${d.distance}`;
+        const cur = best.get(key);
+        if (!cur || (d.timeSec || 0) < (cur.timeSec || 0)) best.set(key, d);
+      }
+      rows = [...best.values()];
+    }
+
     rows.sort((a, b) => {
       if (state.sort === 'name') return (a.name || '').localeCompare(b.name || '', 'zh-Hant');
       if (state.sort === 'date') return (b.date || '').localeCompare(a.date || '');
@@ -160,7 +173,7 @@
     emptyHint.hidden = rows.length > 0;
     if (rows.length === 0) {
       emptyHint.textContent = standard != null
-        ? '此項目暫無達到「國家一級＋二級中間值」標準嘅成績。'
+        ? '此項目暫無達到標準嘅成績。'
         : '沒有符合條件的成績，試試調整篩選。';
     }
   }
@@ -187,6 +200,13 @@
   $('resetBtn').addEventListener('click', () => {
     state.meet = 'all'; state.search = ''; state.sort = 'time';
     meetSel.value = 'all'; searchBox.value = ''; sortSel.value = 'time';
+    render();
+  });
+
+  bestBtn.addEventListener('click', () => {
+    state.bestOnly = !state.bestOnly;
+    bestBtn.classList.toggle('active', state.bestOnly);
+    bestBtn.setAttribute('aria-pressed', String(state.bestOnly));
     render();
   });
 
