@@ -138,6 +138,19 @@ body {
   box-shadow: 0 0 0 3px rgba(0, 163, 196, 0.15);
 }
 
+/* ---------- 年份篩選列 ---------- */
+.year-bar { margin-top: 12px; align-items: flex-end; }
+.year-field { min-width: 140px; }
+.year-apply {
+  background: var(--pool-1);
+  color: #fff;
+  border: 1px solid var(--pool-1);
+  align-self: flex-end;
+}
+.year-apply:hover { background: #005f7d; }
+.year-hint { font-size: 12.5px; color: var(--muted); align-self: center; }
+.year-hint.error { color: #c0392b; font-weight: 600; }
+
 /* ---------- Result meta ---------- */
 .result-meta {
   display: flex;

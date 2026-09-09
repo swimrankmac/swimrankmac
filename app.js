@@ -21,6 +21,8 @@
     search: '',
     sort: 'time',
     bestOnly: false,  // 只顯示每位運動員在每個項目嘅最快成績
+    yearFrom: null,   // 年份下界（含）；null = 唔篩
+    yearTo: null,     // 年份上界（含）；null = 唔篩
   };
 
   // ---- DOM ----
@@ -34,6 +36,10 @@
   const resultEvent = $('resultEvent');
   const emptyHint = $('emptyHint');
   const bestBtn = $('bestBtn');
+  const yearFrom = $('yearFrom');
+  const yearTo = $('yearTo');
+  const yearApply = $('yearApply');
+  const yearHint = $('yearHint');
 
   // ---- 工具：時間轉換 ----
   function formatTime(sec) {
@@ -124,6 +130,13 @@
       if (state.meet !== 'all' && d.meet !== state.meet) return false;
       if (kw && !(d.name || '').toLowerCase().includes(kw)) return false;
       if (standard != null && (d.timeSec || 0) > standard) return false; // 二級達標
+      // 年份範圍篩選
+      if (state.yearFrom != null || state.yearTo != null) {
+        const yr = d.date ? parseInt(d.date.slice(0, 4), 10) : NaN;
+        if (isNaN(yr)) return false;
+        if (state.yearFrom != null && yr < state.yearFrom) return false;
+        if (state.yearTo != null && yr > state.yearTo) return false;
+      }
       return true;
     });
 
@@ -199,7 +212,9 @@
   searchBox.addEventListener('input', (e) => { state.search = e.target.value; render(); });
   $('resetBtn').addEventListener('click', () => {
     state.meet = 'all'; state.search = ''; state.sort = 'time';
+    state.yearFrom = null; state.yearTo = null;
     meetSel.value = 'all'; searchBox.value = ''; sortSel.value = 'time';
+    yearFrom.value = ''; yearTo.value = ''; yearHint.textContent = ''; yearHint.classList.remove('error');
     render();
   });
 
@@ -209,6 +224,38 @@
     bestBtn.setAttribute('aria-pressed', String(state.bestOnly));
     render();
   });
+
+  // ---- 年份篩選（範圍）----
+  function applyYearFilter() {
+    const f = yearFrom.value.trim();
+    const t = yearTo.value.trim();
+    const fy = f === '' ? null : parseInt(f, 10);
+    const ty = t === '' ? null : parseInt(t, 10);
+    if ((f !== '' && isNaN(fy)) || (t !== '' && isNaN(ty))) {
+      yearHint.textContent = '請輸入有效年份';
+      yearHint.classList.add('error');
+      return;
+    }
+    if (fy != null && ty != null && fy > ty) {
+      yearHint.textContent = '「由」年份不能大過「至」年份';
+      yearHint.classList.add('error');
+      return;
+    }
+    state.yearFrom = fy;
+    state.yearTo = ty;
+    yearHint.classList.remove('error');
+    if (fy != null || ty != null) {
+      const txt = (fy != null ? fy : '…') + ' – ' + (ty != null ? ty : '…');
+      yearHint.textContent = '已篩選年份：' + txt;
+    } else {
+      yearHint.textContent = '';
+    }
+    render();
+  }
+  yearApply.addEventListener('click', applyYearFilter);
+  [yearFrom, yearTo].forEach((el) =>
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') applyYearFilter(); })
+  );
 
   // ---- 達標標準 modal ----
   const stdBtn = $('stdBtn');

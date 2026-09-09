@@ -7,7 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>澳門游泳成績排行 · Macau Swimming Rankings</title>
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link rel="stylesheet" href="style.css?v=2" />
 </head>
 <body>
   <header class="site-header">
@@ -54,6 +54,20 @@
       </div>
     </section>
 
+    <!-- 年份篩選（獨立一行） -->
+    <section class="toolbar year-bar">
+      <div class="field year-field">
+        <label for="yearFrom">年份由</label>
+        <input type="number" id="yearFrom" min="1990" max="2030" step="1" inputmode="numeric" placeholder="由 (例 2023)" />
+      </div>
+      <div class="field year-field">
+        <label for="yearTo">至</label>
+        <input type="number" id="yearTo" min="1990" max="2030" step="1" inputmode="numeric" placeholder="至 (例 2026)" />
+      </div>
+      <button id="yearApply" class="btn year-apply" type="button">套用</button>
+      <span id="yearHint" class="year-hint"></span>
+    </section>
+
     <!-- 結果摘要 -->
     <div class="result-meta">
       <span id="resultCount" class="count-badge">—</span>
@@ -81,7 +95,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>數據來源：澳門游泳總會（第66–69屆澳門游泳錦標賽 2023–2026 · 第46–49屆澳門分齡游泳比賽 2023–2026 · 2023/2025/2026年澳門先進游泳錦標賽）＋ World Aquatics成績（1994–2026）· 長池 50m</p>
+    <p>數據來源：澳門游泳總會（第66–69屆澳門游泳錦標賽 2023–2026 · 第46–49屆澳門分齡游泳比賽 2023–2026 · 2023/2025/2026年澳門先進游泳錦標賽）＋ World Aquatics 國際成績（1994–2026）· 長池 50m</p>
   </footer>
 
   <!-- 達標標準 modal -->
@@ -97,6 +111,6 @@
 
   <script src="standards.js?v=7"></script>
   <script src="data-2026.js?v=16"></script>
-  <script src="app.js?v=11"></script>
+  <script src="app.js?v=12"></script>
 </body>
 </html>
